@@ -4,17 +4,15 @@ import com.mysql.jdbc.Connection;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.Hashtable;
-import java.util.Properties;
-import java.util.List;
 
 
 /**
  * Created by Ignacio on 19/04/2017.
  */
-public class EtakemonManagerDB<E> {
+public class EtakemonManagerDB<Usuario> {
     Connection connection;
     PreparedStatement stm;
-    public void add(E e)throws Exception{
+    public void add(Usuario e)throws Exception{
         StringBuffer  comanda = new StringBuffer("INSERT INTO ").append(this.getClass().getSimpleName()).append("s (");
         Field[] atributos = this.getClass().getDeclaredFields();
         for (int i=0;i<atributos.length;i++) {
@@ -42,7 +40,7 @@ public class EtakemonManagerDB<E> {
                     + sqle.getErrorCode() + " " + sqle.getMessage());}
         System.out.println(comanda);
     }
-    public void delete(E e)throws Exception{
+    public void delete(Usuario e)throws Exception{
         StringBuffer  comanda = new StringBuffer("DELETE FROM ").append(this.getClass().getSimpleName());
         Field[] atributos = this.getClass().getDeclaredFields();
         comanda.append(" WHERE ");
@@ -54,7 +52,7 @@ public class EtakemonManagerDB<E> {
         }
         System.out.println(comanda);
     }
-    public void modify(E e)throws Exception{
+    public void modify(Usuario e)throws Exception{
         StringBuffer  comanda = new StringBuffer("UPDATE  ").append(this.getClass().getSimpleName()).append("(");
         Field[] atributos = this.getClass().getDeclaredFields();
         for (Field a:atributos) {
@@ -69,7 +67,7 @@ public class EtakemonManagerDB<E> {
         }
         System.out.println(comanda);
     }
-    public E select(E e, Hashtable<String,String>conditions)throws Exception{
+    public Usuario select(Usuario e, Hashtable<String,String>conditions)throws Exception{
         StringBuffer  comanda = new StringBuffer("SELECT ");
         if(conditions.contains("All"))
             comanda.append("*");
@@ -90,7 +88,7 @@ public class EtakemonManagerDB<E> {
             connection= (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/datos1","root","root");
             stm = connection.prepareStatement(comanda.toString());
             ResultSet resultSet=stm.executeQuery();
-            E result = getMapObject(e, resultSet);
+            Usuario result = getMapObject(e, resultSet);
             System.out.println(comanda);
             connection.close();
             return result;
@@ -101,7 +99,7 @@ public class EtakemonManagerDB<E> {
             return null;
         }
     }
-    private E getMapObject(E e, ResultSet resultSet){
+    private Usuario getMapObject(Usuario e, ResultSet resultSet){
 
         try {
             Class nameClass = e.getClass();

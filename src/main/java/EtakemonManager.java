@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import static com.sun.corba.se.impl.util.RepositoryId.cache;
+
 /**
  * Created by Ignacio on 19/04/2017.
  */
@@ -25,13 +27,17 @@ public class EtakemonManager {
         Usuario usuario=new Usuario();
         Hashtable<String,String> conditions=new Hashtable<String, String>();
         conditions.put("All","All");
+        List<Usuario>list=new ArrayList<Usuario>();
         etakemonManagerDB.select(usuario,conditions);
-        List<Usuario>list=new ArrayList<Usuario>(cache.values());
         return list;
     }
 
-    public Usuario getUser(String name) {
-        return cache.get(name);
+    public Usuario getUser(String name) throws Exception {
+        Usuario usuario=new Usuario();
+        Hashtable<String,String> conditions=new Hashtable<String, String>();
+        conditions.put("All","All");
+        return etakemonManagerDB.select(usuario,conditions);
+
     }
     List<Etackemons> getEtackemons(String name){
         List<Etackemons>list=new ArrayList<Etackemons>();
